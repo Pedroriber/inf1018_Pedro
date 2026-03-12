@@ -1,0 +1,22 @@
+Aluno: Pedro Ribeiro Fernandes do Rosário
+Matrícula: 2510753
+
+pergunta: Por que seu programa não foi encontrado ao escrever ex1?
+R: Creio que foi por conta de não haver "./", que suponho que indica o arquivo a ser executado
+
+
+Pergunta: O que aconteceu? O que mudou? (qunado executei ex3.c)
+R: A main rodou da mesma forma e gerou resultado
+
+
+Procure entender o que a função dump faz.:
+- A função dump printa os bytes de memorias das variaveis passadas
+
+ Que argumentos são passados em cada chamada do dump?
+R: são passadas as variaveis, int char...
+
+O que você pode concluir sobre o armazenamento das variáveis c e i, e do vetor v?
+R: char c1 = 1 é tratado como um byte ao passar por &c1
+char c2 = "1" é um caractere, entçao seus bytes são baseados no ASCII
+int i = 1, por ser int tem 4 bytes e fica 1000 pois bytes são lidos do aior pro menor na função dump
+char v[]="1" imprime o byte do caractere 1 e o \n ao final do vetor
