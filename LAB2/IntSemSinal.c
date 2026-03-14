@@ -8,6 +8,8 @@ void dump (void *p, int n) {
   }
 }
 
+
+
 int main (void) {
   char p[] = " ";
   dump(p, sizeof(p));
