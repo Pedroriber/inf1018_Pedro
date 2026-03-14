@@ -1,0 +1,19 @@
+Crie um arquivo C contendo as funções dump e main, compile-o e execute o programa. 
+Explique o resultado desse programa (qual o tamanho, em bytes, de um inteiro? 
+como esses bytes estão ordenados na memória?).
+
+R: Um inteiro tem 4 bytes, 10000 em hexadecimal seria 0x2710, no resultado da função
+aparece 10270000, o que nos diz que o sistema é little-endian
+
+- Um long tem 8 bytes e um short tem 2 bytes
+
+---------------------------------------------------------------------------------------------
+
+Procure entender como funciona a função string2num.
+ O que está acontecendo? 
+ O que será o valor de (*s - '0') a cada iteração? E o valor de a?
+
+ R: A função tranforma uma string em numero. o valor será codigo da tabela ascii do caractere do numero 
+ menos o codigo do caractere '0' que é o primeiro. por exemplo '3' -> 51 , '0' -> 48, 51 -48 = 3.
+ O valor de a garante o proximo caractere será adicionada ao final do numero.
+ 
