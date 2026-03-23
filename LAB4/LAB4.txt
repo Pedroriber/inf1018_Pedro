@@ -1,13 +1,16 @@
+Nome: PEdro ribeiro Fernandes do Rosario
+mat: 2510753
+
 1. faça contas para determinar o que será impresso por ele. 
 char - 1 byte 
 short - 2 bytes
 int - 4 bytes
 
-char c= 150 -> 10010110 -> 0x96
-short s= -3 -> pos (0000 0101) -> neg(1111 1011) -> 0xfb 
-(errado- ff fd, hexadecimal 1 byte= 2 digitos, e fd pois é littleendian)
+char c= 150 -> 1001 0110 -> 0x96
+short s= -3 -> pos (0000 0011) -> neg(1111 1101) -> 0xfd
+(errado- fd ff, hexadecimal 1 byte= 2 digitos, e fd pois é littleendian)
 int i = -151 -> pos(0000 0000 1001 0111) -> neg(1111 1111 0110 1001) -> 0xff69
-(errado, é ff ff ff 69)
+(errado, é 69 ff ff ff)
 
 2.faça contas para determinar o que será impresso por ele. 
 short l = -32765 -> pos (0111 1111 1111 1101) -> neg(1000 0000 0000 0011)-> 
@@ -15,6 +18,30 @@ c0 00 00 01
 unsigned short k = 32771 -> (1000 0000 0000 0011) -> c0 00 00 01 
 (errei, os bytes são lidos na ordem inversa mas dentro de cada byte ordem não muda)
 certo: 0380
+----------------------------------------------------------------------------
+Programa 1
+- verifica se x é menor que y, x é menor pois 0xffffffff -> 1111 1111 1111 1111 (começa com 1 então é neg)
+  -> 0000 0000 0000 0001 (numero positivo original: 1) -> -1 , que é menor q 2
+
+Programa 2
+- Como agora é unsigned int, 0xffffffff -> 1111 1111 1111 1111 -> 
+  2^15 + 2^14 + ... + 2^0 -> que é maior que 2
+
+Trocando %d por %u, acontece de vvermos o valor real de unsigned 0xffffffff,
+pois %d lê signed e %u lê unsigned
+
+Programa 3
+- int 0xffffffff é -1 e unsigned int 2 é 0000 0000 0000 0010
+  mas quando há uma comparação entre signed e unsigned, ambos 
+  viram unsigned, logo x>y
+
+
+5. o que o código gerado tem que fazer? 
+diga como ficará a representação interna de ui
+
+ao atribuir um signed em um unsigned, o programa passa a contar 
+o bit mais signicativo, ou seja, -1 = 0xffffffff -> 42944967295
+e o dump vai printar ff ff ff ff
 
 
 

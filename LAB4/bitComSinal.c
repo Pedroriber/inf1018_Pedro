@@ -34,7 +34,7 @@ void dump (void *p, int n) {
   printf("dump de i: \n");
   dump(&i, sizeof(i));
   return 0;
-} */
+}  */
 //------------------------------------
 // 2.
 /* int main (void) {
@@ -47,7 +47,7 @@ void dump (void *p, int n) {
   dump(&k, sizeof(k));
   return 0;
 } */
-
+/* 
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -72,7 +72,7 @@ int string2num (char *s, int base) {
 }
 
 int xbyte (packed_t word, int bytenum) {
-  /* implementar!!! */
+  // implementar!!! 
     if(bytenum < 0 || bytenum > 3){
           printf("pane: numero de byte invalido! \n");
           exit(1);
@@ -91,5 +91,17 @@ int main (int argc, char **argv) {
 
   x = xbyte(string2num(argv[1], 16), atoi(argv[2]));
   printf ("%08x  %d\n", x, x);
+  return 0;
+}
+ */
+
+
+
+int main (void) {
+  signed char sc = -1;
+  unsigned int ui = sc;
+  printf("sc = %d, ui = %u\n", sc, ui);
+  printf("dump de ui:\n");
+  dump(&ui, sizeof(ui));
   return 0;
 }
