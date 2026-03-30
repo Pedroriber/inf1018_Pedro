@@ -1,0 +1,104 @@
+int b[2]; -> tamanho é 2*4= 8 bytes . Se organiza em linha, normalmente
+short a[2][3]; -> tamanho é (2*3)*2 = 12 bytes, tambem se organiza em linha,:
+| a[0][0] | a[0][1] | a[0][2] | a[1][0] | a[1][1] | a[1][2] |
+    2B         2B        2B        2B        2B        2B
+
+dump de int b[2] e a[2][3]:
+b: 
+0x7ffeb0c44074 - 00
+0x7ffeb0c44075 - 00
+0x7ffeb0c44076 - 00
+0x7ffeb0c44077 - 00
+0x7ffeb0c44078 - 01
+0x7ffeb0c44079 - 00
+0x7ffeb0c4407a - 00
+0x7ffeb0c4407b - 00
+a: 
+0x7ffeb0c4407c - 00
+0x7ffeb0c4407d - 00
+0x7ffeb0c4407e - 01
+0x7ffeb0c4407f - 00
+0x7ffeb0c44080 - 02
+0x7ffeb0c44081 - 00
+0x7ffeb0c44082 - 03
+0x7ffeb0c44083 - 00
+0x7ffeb0c44084 - 04
+0x7ffeb0c44085 - 00
+0x7ffeb0c44086 - 05
+0x7ffeb0c44087 - 00
+
+Dump de primira struct:
+
+x: 
+sizeof(x) = 12
+0x7ffcd010e77c - a4
+0x7ffcd010e77d - a3
+0x7ffcd010e77e - a2
+0x7ffcd010e77f - a1
+0x7ffcd010e780 - b2
+0x7ffcd010e781 - b1
+0x7ffcd010e782 - 10 |
+0x7ffcd010e783 - d0 |-> padding (podem assumir qualq valor (lixo eletronico))
+0x7ffcd010e784 - c4
+0x7ffcd010e785 - c3
+0x7ffcd010e786 - c2
+0x7ffcd010e787 - c1
+
+3. Qual o tamanho, e como os tipos abaixo são organizados na memória?
+
+a. struct X1 {
+  char c1;
+  int i;
+  char c2;
+};
+R: c1000 iiii c2 c1 .... (tam= 9 bytes) 
+Correcção: 12 bytes ->  c1000 iiii c2000 (O tamanho final é múltiplo do maior alinhamento)
+
+b. struct X2 {
+  long l;
+  char c;
+} x2 = {0x0102030405060708, 0xc1};
+R: 8+1+7(padding)= 16 bytes
+
+c.struct X3 {
+  int i;
+  char c1;
+  char c2;
+} x3 = {0x01020304, 0xc1, 0xc2};
+R: 4+1+1+2(padding)=8 
+
+d. struct X4 {
+  struct X2 x;
+  char c;
+} x4 = {{0x0102030405060708, 0xc1}, 0xc2};
+R: 16 + 1+15(padding)=32 
+Correcção: tamanho final multiplo do long da struct X2, 24
+
+e. struct X5 {
+  char c1;
+  char c2;
+  char c3;
+} x5 = {0xc1, 0xc2, 0xc3};
+R: 1+1+1=3 bytes
+
+f. struct X6 {
+  short s1;
+  int i;
+  char c[3];
+  short s2;
+} x6 = {0x0102, 0x01020304, {0xc1, 0xc2, 0xc3}, 0x0102};
+R: 2+ 2(padding)+4+3+1(padding)+2+2(padding)=16 bytes
+
+g. union U1 {
+  int i;
+  char c[5];
+};
+R: iiiiiiii ou ccccc000
+
+h.union U2 {
+  short s;
+  char c[5];
+};
+R: ss000 ou ccccc
+Correcção: não é cinco pois deve der multiplo de 2(short)
+então é 6 bytes

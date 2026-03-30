@@ -14,8 +14,8 @@ int i = -151 -> pos(0000 0000 1001 0111) -> neg(1111 1111 0110 1001) -> 0xff69
 
 2.faça contas para determinar o que será impresso por ele. 
 short l = -32765 -> pos (0111 1111 1111 1101) -> neg(1000 0000 0000 0011)-> 
-c0 00 00 01
-unsigned short k = 32771 -> (1000 0000 0000 0011) -> c0 00 00 01 
+c0 00 00 01 (errado, é 0380)
+unsigned short k = 32771 -> (1000 0000 0000 0011) -> c0 00 00 01 (errado)-> certo: 8003 -> littleend(0380)
 (errei, os bytes são lidos na ordem inversa mas dentro de cada byte ordem não muda)
 certo: 0380
 ----------------------------------------------------------------------------
