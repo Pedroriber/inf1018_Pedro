@@ -2,10 +2,9 @@
 int nums[] = {10, -21, -30, 45};
 int main() {
   int i, *p;
-  int sum = 0;
   for (i = 0, p = nums; i != 4; i++, p++)
-    sum += *p;
-  printf("%d\n", sum);
+    if ((*p % 2) == 0)
+      printf("%d\n", *p);
   return 0;
 }
 */
@@ -29,16 +28,21 @@ main:
 
   movl  $0, %ebx    /* i = 0 */
   movq  $nums, %r12 /* p = nums */
-  movl  $0, %eax    /* sum = 0  (IMPORTANTE) */
-
+  
 L1:
   cmpl  $4, %ebx
   je    L2
 
   movl  (%r12), %edx   /* edx = *p */
+  andl   $1, %edx
+  cmpl  $0, %edx
+  jne    Lnext
 
-  addl  %edx, %eax     /* sum += *p */
-
+  movq    $Sf, %rdi
+  movl    (%r12), %esi
+  call    printf
+  
+Lnext:
   addl  $1, %ebx       /* i++ */
   addq  $4, %r12       /* p++ */
   jmp   L1
@@ -47,9 +51,7 @@ L2:
 
 /*************************************************************/
 /* imprime o valor de %eax (sum) */
-  movq    $Sf, %rdi
-  movl    %eax, %esi
-  call    printf
+  
 /*************************************************************/
 
 /***************************************************************/
