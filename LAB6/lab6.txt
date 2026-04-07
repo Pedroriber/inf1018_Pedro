@@ -1,0 +1,14 @@
+Apenas fiquei receoso de mudar a ordem do print e incrementção
+
+4)
+- usar movsbl para passar de byte pra int
+- mudar o valor de incrementação pra 1, já que é byte 
+
+3)
+  andl   $1, %edx
+  cmpl  $0, %edx
+  jne    Lnext
+
+andl $1, %edx: Aplica uma operação AND com 1, resultando em 0 se o número for par (bit menos significativo é 0) ou 1 se for ímpar.
+cmpl $0, %edx: Compara o resultado com 0.
+jne Lnext: Se não for igual a 0 (ou seja, se for ímpar), pula para Lnext (não imprime o número). Se for par, continua para imprimir
