@@ -1,3 +1,6 @@
+Notas: entendo a correspondencia entre eles, fiz algumas anotações
+no cõdigo
+
 /*
 #include <stdio.h>
 
@@ -11,9 +14,10 @@ int main (void) {
   return 0;
 }*/
 
+1- função printa caracteres do codigo ASCII.
 
 .data
-S2:    .byte 65, 108, 111, 32, 123, 103, 97, 108, 101, 114, 97, 125, 33, 0
+S2:    .byte (pois é vetor de char) 65, 108, 111, 32, 123, 103, 97, 108, 101, 114, 97, 125, 33, 0
 Sf:  .string "%c"    /* primeira string de formato para printf */
 Sf2: .string "\n"    /* segunda string de formato para printf */
 
@@ -21,26 +25,19 @@ Sf2: .string "\n"    /* segunda string de formato para printf */
 .globl  main
 main:
 
-/********************************************************/
-/* mantenha este trecho aqui e nao mexa - prologo !!!   */
-  pushq   %rbp
-  movq    %rsp, %rbp
-  subq    $16, %rsp
-  movq    %rbx, -8(%rbp)  /* guarda rbx */
-  movq    %r12, -16(%rbp)  /* guarda r12 */
-/********************************************************/
 
-  movq  $S2, %r12  /* r12 = &S2 */
+  movq  $S2, %r12  /* r12 = &S2  (registra o vetor)*/ 
+  - movq pois ponteiro tem 8 bytes
+  - $ é endereço de S2
 
 L1:
-  cmpb  $0, (%r12)  /* if (*pc == 0) ? */
+  cmpb  $0, (%r12)  /* if (*pc == 0) ? */ 
+  - condição do while
+  - atenção aos parentes: conteudo do endereço apontado por r12
   je  L2          /* goto L2 */
-  cmpb  $123, (%r12)
-  je  increm
-  cmpb  $125, (%r12)
-  je  increm
-  movsbl  (%r12), %eax    /* eax = *r12 (estendendo o byte para 32 bits */
 
+  movsbl  (%r12), %eax    /* eax = *r12 (estendendo o byte para 32 bits */
+  - estende pois o printf espera um int de 32 bits
 /*************************************************************/
 /* este trecho imprime o valor de %eax (estraga %eax)  */
   movq    $Sf, %rdi    /* primeiro parametro (ponteiro)*/
@@ -48,8 +45,7 @@ L1:
   movl  $0, %eax
   call  printf       /* chama a funcao da biblioteca */
 /*************************************************************/
-  jmp increm
-increm:
+
   addq  $1, %r12  /* r12 += 1; */
   jmp  L1         /* goto L1; */
 
@@ -69,3 +65,18 @@ L2:
   leave
   ret      
 /***************************************************************/
+
+2) curto cicuito:
+  cmpb  $123, (%r12)
+  je  increm
+  cmpb  $125, (%r12)
+  je  increm
+
+se o primeiro der igual, ele não testa o segunfo (curto)
+
+3) não dá pra usar eax pois é destruido pelo printf
+
+4) movl    S2(,%ebx,4), %edx   # edx = nums[i]
+S2(,%ebx,4) - acessa um elememto do vetor
+
+- mudar o print da finalização, adicionando   movl    %eax, %esi

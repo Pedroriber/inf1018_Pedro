@@ -1,21 +1,7 @@
-/*
-#include <stdio.h>
-
-char S2[] = {65, 108, 111, 32, 123, 103, 97, 108, 101, 114, 97, 125, 33, 0};
-
-int main (void) {
-  char *pc = S2;
-  while (*pc)
-    printf ("%c", *pc++);
-  printf("\n");
-  return 0;
-}*/
-
 
 .data
-S2:    .byte 65, 108, 111, 32, 123, 103, 97, 108, 101, 114, 97, 125, 33, 0
-Sf:  .string "%c"    /* primeira string de formato para printf */
-Sf2: .string "\n"    /* segunda string de formato para printf */
+S2:    .int 1
+Sf:  .string "%d\n"    /* primeira string de formato para printf */
 
 .text
 .globl  main
@@ -30,36 +16,26 @@ main:
   movq    %r12, -16(%rbp)  /* guarda r12 */
 /********************************************************/
 
-  movq  $S2, %r12  /* r12 = &S2 */
+  movl  $1, %ebx  /* eax = 1 */
 
 L1:
-  cmpb  $0, (%r12)  /* if (*pc == 0) ? */
+  cmpl  $11, %ebx  /* if (eax == 11) ? */
   je  L2          /* goto L2 */
-  cmpb  $123, (%r12)
-  je  increm
-  cmpb  $125, (%r12)
-  je  increm
-  movsbl  (%r12), %eax    /* eax = *r12 (estendendo o byte para 32 bits */
-
+  movl  %ebx, %edx
+  imull  %edx, %edx
 /*************************************************************/
 /* este trecho imprime o valor de %eax (estraga %eax)  */
   movq    $Sf, %rdi    /* primeiro parametro (ponteiro)*/
-  movl    %eax, %esi   /* segundo parametro  (inteiro) */
+  movl    %edx, %esi   /* segundo parametro  (inteiro) */
   movl  $0, %eax
   call  printf       /* chama a funcao da biblioteca */
 /*************************************************************/
   jmp increm
 increm:
-  addq  $1, %r12  /* r12 += 1; */
+  addl  $1, %ebx  /* eax += 1; */
   jmp  L1         /* goto L1; */
 
 L2:  
-/*************************************************************/
-/* este trecho imprime o \n (estraga %eax)                  */
-  movq    $Sf2, %rdi    /* primeiro parametro (ponteiro)*/
-  movl  $0, %eax
-  call  printf       /* chama a funcao da biblioteca */
-/*************************************************************/
 
 /***************************************************************/
 /* mantenha este trecho aqui e nao mexa - finalizacao!!!!      */
