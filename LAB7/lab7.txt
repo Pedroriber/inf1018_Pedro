@@ -1,4 +1,4 @@
-Notas: entendo a correspondencia entre eles, fiz algumas anotações
+1) Notas: entendo a correspondencia entre eles, fiz algumas anotações
 no cõdigo
 
 /*

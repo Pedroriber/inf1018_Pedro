@@ -34,10 +34,13 @@ main:
   movl    $0, %eax        # s = 0
   
 L1:
-  cmpl  $4, %ebx /* if (*pc == 0) ? */
+  cmpl  $4, %ebx /* if (i == 4) ? */
   je  L2          /* goto L2 */
   
-  movl    S2(,%ebx,4), %edx   # edx = nums[i]
+  movq %rbx, %rcx     # i
+  imulq $4, %rcx      # i * sizeof(int)
+  leaq S2(%rcx), %rcx # endereço do elemento
+  movl (%rcx), %edx   # acessa memória  # edx = nums[i]
   addl    %edx, %eax            # s += nums[i]
 
   addl    $1, %ebx              # i++
