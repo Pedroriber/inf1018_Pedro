@@ -20,7 +20,7 @@ foo:
   movq  %rsp, %rbp
   subq  $16, %rsp
   movq  %rbx, -8(%rbp)
-  movq  %r12, -16(%r12)
+  movq  %r12, -16(%rbp)
 
 
   movl  $0, %ebx  /*i = 0*/
@@ -60,6 +60,4 @@ L2:
   movq  -16(%rbp), %r12
   leave
   ret
-
-
 
