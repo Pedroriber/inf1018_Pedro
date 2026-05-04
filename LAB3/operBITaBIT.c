@@ -36,7 +36,7 @@ unsigned char rotate_left(unsigned char x, int n){
 
 int main() {
   printf("%b\n",rotate_left(0b01100001, 2));
-  printf("%x\n",switch_byte(0xAB));
+  printf("%x\n",switch_byte(0b01100001));
   printf("%x tem numero %s de bits\n",0x01010101,odd_ones(0x01010101) ? "impar":"par");
   printf("%x tem numero %s de bits\n",0x01030101,odd_ones(0x01030101) ? "impar":"par");
   return 0;

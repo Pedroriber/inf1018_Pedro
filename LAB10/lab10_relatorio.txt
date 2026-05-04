@@ -1,0 +1,18 @@
+  
+x->next = movq  8(%rdi), %rdi
+
+Stack para chamar função quando tem muitos argumrntos:
+exemplo:
+
+    movl    %esi, -12(%rbp)
+    movq    %rdi, -20(%rbp)
+    movl    %edx, -28(%rbp)
+
+    movl    (%rbx), %edi
+    movl    %edx, %esi
+
+    call f
+
+    movl    -12(%rbp), %esi
+    movq    -20(%rbp), %rdi
+    movl    -28(%rbp), %edx

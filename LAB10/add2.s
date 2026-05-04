@@ -13,11 +13,23 @@ add:
 
   pushq  %rbp
   movq   %rsp, %rbp
-  subq   $??,  %rsp
-  # salvar calle-saved
-
   
+
+  movl  $0, %eax
+ 
 L1:
 
+  cmpq  $0, %rdi     #x==NULL?
+  je L2
+
+  addl  (%rdi), %eax
+  movq  8(%rdi), %rdi
+
+  jmp L1
+
+L2:
+
+  leave
+  ret
 
   

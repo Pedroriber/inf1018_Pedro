@@ -1,0 +1,23 @@
+1) o programa ira imprimir o valor de cada 
+byte em hexadecimal, são eles
+
+s.a= -16 -> 0001 0000 -> 1111 0000 -> 0xff ff ff f0
+s.c= 97+3=100 dec-> 0x64
+s.p=  0x7ffee4bb4260 ->  0x7ffee4bb4264
+
+dump::
+
+f0
+ff
+ff
+ff
+64
+pp
+pp
+pp
+64
+42
+bb
+e4
+fe
+7f
