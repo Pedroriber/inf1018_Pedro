@@ -10,7 +10,6 @@ void boo (struct X *px, int n, int val) {
 */
 #Traduçao
 
-
 .text
 .globl boo
 boo:
