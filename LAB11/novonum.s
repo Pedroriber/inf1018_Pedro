@@ -18,8 +18,7 @@ novonum:
     movq %rdi, -8(%rbp)
     movq $Sf2, %rdi
     call printf
-
-    movq 8(%rbp), %rdi
+    movq -8(%rbp), %rdi
 
     movq $Sf1, %rdi
     leaq -4(%rbp), %rsi
