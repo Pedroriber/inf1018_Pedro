@@ -1,6 +1,6 @@
 1)
 R: leaq pega um endereço (a partir de um deslocamento de registrador) e coloca
-   essa memória em um registrador, ele carrega o endereço, não o valor.
+   essa memória em um registrador; ele carrega o endereço, não o valor.
    É usado geralmente com ponteiross
 
 
