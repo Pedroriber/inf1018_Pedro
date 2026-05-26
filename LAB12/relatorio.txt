@@ -1,0 +1,14 @@
+1) buf: 0x7ffdf38f2360
+Ouch!: You caused a segmentation fault!
+Better luck next time
+
+2) buf: 0x7ffceeef5a70
+
+danger! you called danger()
+
+-> cannot be called without validation!
+Smoke!: You called smoke()
+
+3)
+buf: 0x7fffffffce20
+Fizz!: You called fizz(0x1020304)

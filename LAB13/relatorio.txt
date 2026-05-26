@@ -1,0 +1,12 @@
+4) Disassembly of section .text:
+
+0000000000000000 <foo>:
+   0:   e8 00 00 00 00          call   5 <foo+0x5>
+   5:   c3                      ret
+
+5) não consegui executar, deu segmentation default.
+6)Disassembly of section .text:
+
+0000000000000000 <foo>:
+   0:   e9 00 00 00 00          jmp    5 <foo+0x5>
+   5:   c3                      ret
