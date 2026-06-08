@@ -4,7 +4,28 @@
    0:   e8 00 00 00 00          call   5 <foo+0x5>
    5:   c3                      ret
 
-5) não consegui executar, deu segmentation default.
+5) Eu estava tentanfo fazer algo do tipo:
+int main() { 
+   unsigned char codigo[] = { 0xe8, 0x00, 0x00, 0x00, 0x00, 0xc3 }; 
+   /* Calcula o offset como int (32 bits no x86-64) */ 
+   int offset = (int)((char *)add - ((char *)codigo + 5));
+
+- mas dava segmentation default, isso ocorreu pois call e8 só aceita um deslocamento de 32 bits,
+ mas o offset entre o codigo e add era muito grande, +2gb.
+ A solução foi usar um registrador pra colocar o endereço de add e fazer a chamada desse registrador,
+ o que deturpa um pouco do objeto do laboratório
+ int main() {
+
+    unsigned char codigo[] = {
+        0x48, 0xB8,                    /* movabs ..., %rax */
+        0,0,0,0,0,0,0,0,              /* endereço de add */
+        0xFF, 0xD0,                    /* call *%rax */
+        0xC3                           /* ret */
+    };
+
+    unsigned long endereco = (unsigned long)add;
+
+
 6)Disassembly of section .text:
 
 0000000000000000 <foo>:
