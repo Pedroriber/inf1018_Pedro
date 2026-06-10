@@ -1,36 +1,56 @@
 #include <stdio.h>
+#include <sys/mman.h>
+#include <unistd.h>
 
-typedef int (*funcp)(int);
+typedef int (*funcp)(int x);
+
+#define PAGE_START(P) ((intptr_t)(P)&~(pagesize-1))
+#define PAGE_END(P) (((intptr_t)(P)+pagesize-1)&~(pagesize-1))
+
+int execpage(void *ptr, size_t len) {
+    int ret;
+    const long pagesize = sysconf(_SC_PAGE_SIZE);
+    if (pagesize == -1) return -1;
+    ret = mprotect((void *)PAGE_START(ptr),
+                   PAGE_END((intptr_t)ptr + len) - PAGE_START(ptr),
+                   PROT_READ | PROT_WRITE | PROT_EXEC);
+    if (ret == -1) return -1;
+    return 0;
+}
+
+#undef PAGE_START
+#undef PAGE_END
 
 int add(int x) {
     return x + 1;
 }
-
-int main() {
-
-    unsigned char codigo[] = {
-        0x48, 0xB8,                    /* movabs ..., %rax */
-        0,0,0,0,0,0,0,0,              /* endereço de add */
-        0xFF, 0xD0,                    /* call *%rax */
-        0xC3                           /* ret */
+unsigned char codigo[] = {
+        0xe8, 0x00, 0x00, 0x00, 0x00,
+        0xc3
     };
+int main() {
+    
 
-    unsigned long endereco = (unsigned long)add;
+    /* Calcula o offset como int (32 bits no x86-64) */
+    int offset = (int)((char *)add - ((char *)codigo + 5));
 
-    codigo[2] = (endereco      ) & 0xff;
-    codigo[3] = (endereco >>  8) & 0xff;
-    codigo[4] = (endereco >> 16) & 0xff;
-    codigo[5] = (endereco >> 24) & 0xff;
-    codigo[6] = (endereco >> 32) & 0xff;
-    codigo[7] = (endereco >> 40) & 0xff;
-    codigo[8] = (endereco >> 48) & 0xff;
-    codigo[9] = (endereco >> 56) & 0xff;
+    /* Escreve em little-endian byte a byte */
+    codigo[1] = (offset ) & 0xff;
+    codigo[2] = (offset >> 8) & 0xff;
+    codigo[3] = (offset >> 16) & 0xff;
+    codigo[4] = (offset >> 24) & 0xff;
 
-    funcp f = (funcp)codigo;
+    printf("codigo está em: %p\n", (void *)codigo);
+    printf("add está em: %p\n", (void *)add);
+    printf("offset calculado: %d\n", offset);
 
-    int resultado = f(10);
+    if (execpage(codigo, sizeof(codigo)) == -1) {
+        perror("execpage");
+        return 1;
+    }
 
+    funcp foo = (funcp)codigo;
+    int resultado = foo(10);
     printf("Resultado = %d\n", resultado);
-
     return 0;
 }
