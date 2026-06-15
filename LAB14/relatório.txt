@@ -1,0 +1,28 @@
+******** int2float ****************
+ 0 ->    +0.0000
+ 1 ->    +1.0000
+ -1 ->    -1.0000
+ 2147483647 -> +2147483520.0000
+ -2147483647 -> -2147483520.0000
+ 12345 -> +12345.0000
+ -12345 -> -12345.0000
+
+******** float2float ****************
+ 0.000000 -> +0.000000
+ 1.000000 -> +2.000000
+ -1.000000 -> -2.000000
+ 12345.678711 -> +24691.357422
+ -12345.678711 -> -24691.357422
+
+
+ Na função int2float temos dois resultados curiosos:
+ 2147483647 -> +2147483520.0000
+ -2147483647 -> -2147483520.0000
+
+ isso ocorre pois:
+
+1. `2147483647` precisa de 31 bits.
+2. Um `float` tem apenas 24 bits de precisão.
+3. Os 7 bits menos significativos são descartados.
+4. O valor exato não pode ser representado.
+5. Seu algoritmo faz truncamento, gerando `2147483520`.

@@ -25,30 +25,62 @@ float float2(float f){
 }
 float int2float(int i){
     U u;
-    u.i = i;
-    
+
+    if(i == 0){
+        u.i = 0;
+        return u.f;
+    }
+
+    unsigned int s = 0;
+    unsigned int n;
+
+    if(i < 0){
+        s = 1;
+        n = -i;
+    }
+    else{
+        n = i;
+    }
+
+    int k = 31;
+    while(((n >> k) & 1) == 0)
+        k--;
+
+    unsigned int exp = k + 127;
+
+    unsigned int frac = n - (1 << k);
+
+    int shift = 23 - k;
+
+    if(shift >= 0)
+        frac <<= shift;
+    else
+        frac >>= (-shift);
+
+    u.i = makefloat(s, exp, frac);
+
+    return u.f;
 }
 
 int main() {
-   /* int i;
+    int i;
 
-   printf("\n******** int2float ****************\n");
-   i = 0;
-   printf(" %d -> %+10.4f\n", i, int2float(i));
-   i = 1;  
-   printf(" %d -> %+10.4f\n", i, int2float(i));
-   i = -1;  
-   printf(" %d -> %10.4f\n", i, int2float(i));
-   i = 0x7fffffff;  
-   printf(" %d -> %+10.4f\n", i, int2float(i));
-   i = -i;
-   printf(" %d -> %+10.4f\n", i, int2float(i));
-   i = 12345;
-   printf(" %d -> %+10.4f\n", i, int2float(i));
-   i = -12345;
-   printf(" %d -> %+10.4f\n", i, int2float(i));
-   return 0; */
-   printf("\n******** float2float ****************\n");
+    printf("\n******** int2float ****************\n");
+    i = 0;
+    printf(" %d -> %+10.4f\n", i, int2float(i));
+    i = 1;  
+    printf(" %d -> %+10.4f\n", i, int2float(i));
+    i = -1;  
+    printf(" %d -> %10.4f\n", i, int2float(i));
+    i = 0x7fffffff;  
+    printf(" %d -> %+10.4f\n", i, int2float(i));
+    i = -i;
+    printf(" %d -> %+10.4f\n", i, int2float(i));
+    i = 12345;
+    printf(" %d -> %+10.4f\n", i, int2float(i));
+    i = -12345;
+    printf(" %d -> %+10.4f\n", i, int2float(i));
+    printf("\n******** float2float ****************\n");
     float f;
     f = 0.0;
     printf(" %f -> %+f\n", f, float2(f));
