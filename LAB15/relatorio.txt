@@ -1,0 +1,117 @@
+1)
+/*
+float foo (double a, float b) {
+  return (a+b)*(a-b);
+}
+*/
+
+.text
+.globl foo
+foo:
+    pushq %rbp
+    movq %rsp, %rbp
+    cvtss2sd %xmm1, %xmm1
+    movsd %xmm1, %xmm5
+
+    addsd %xmm0, %xmm1  # b= a+b
+    movsd %xmm1, %xmm2  #xmm2= a+b
+    subsd %xmm5, %xmm0  # 
+    movsd %xmm0, %xmm3
+    mulsd %xmm2, %xmm3
+    movsd %xmm3, %xmm0
+    cvtsd2ss %xmm0, %xmm0
+
+    leave
+    ret
+
+2)
+/*
+float foo1 (float a, float b) {
+  return sin(a) + b;
+}
+*/
+
+.text
+.globl foo1
+foo1:
+
+    pushq %rbp
+    movq  %rsp, %rbp
+    subq  $16, %rsp
+
+    movss %xmm1, -4(%rbp)
+
+    call sinf
+
+    movss -4(%rbp), %xmm1
+
+    addss %xmm1, %xmm0
+
+    leave
+    ret
+
+3)
+/*
+double foo2 (float a, float b) {
+  return sin(a) + cos(b);
+}
+*/
+
+.text
+.globl foo2
+foo2:
+
+    pushq %rbp
+    movq  %rsp, %rbp
+    subq  $16, %rsp
+
+    movss %xmm1, -4(%rbp)
+    call sinf
+    movss %xmm0, -8(%rbp)
+
+    movss -4(%rbp), %xmm0
+    call cosf
+    addss -8(%rbp), %xmm0
+
+    leave
+    ret
+
+
+4)
+/*
+double foo3 (double *a, int n) {
+  int i;
+  double r = 0.0;
+  for (i=0; i<n; i++) {
+    r += sin(*a);
+    a++;
+  }
+  return r;
+}
+*/
+.text
+.globl foo3
+foo3:
+    pushq %rbp
+    movq  %rsp, %rbp
+    subq  $16, %rsp
+    movq $0, %rax
+    cvtsi2sd  %rax, %xmm2
+
+while:
+    movl $0, %ecx
+
+    cmpl %esi, %ecx
+    jge fim
+
+    movsd (%rdi), %xmm0    # carregar *a
+    call sin               # sin(double)
+    addsd %xmm0, %xmm2     # r += sin(*a)
+
+    addq $8, %rdi          # a++
+    incl %ecx              # i++
+    jmp while
+fim:
+    movsd %xmm2, %xmm0
+    leave
+    ret
